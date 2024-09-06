@@ -1,16 +1,34 @@
+// import { CorsOptions } from "cors";
+
+// export const corsConfig: CorsOptions = {
+//     origin: function(origin, callback) {
+//         const whitelist = [process.env.FRONTEND_URL]
+
+//         if(process.argv[2] === '--api') {
+//             whitelist.push(undefined)
+//         }
+//         if(whitelist.includes(origin)) {
+//             callback(null, true)
+//         } else {
+//             callback(new Error('Error de CORS'))
+//         }
+//     }
+// }
+
 import { CorsOptions } from "cors";
 
 export const corsConfig: CorsOptions = {
-    origin: function(origin, callback) {
-        const whitelist = [process.env.FRONTEND_URL]
+    origin: (origin, callback) => {
+        const whitelist = [process.env.FRONTEND_URL];
 
-        if(process.argv[2] === '--api') {
-            whitelist.push(undefined)
+        if (process.env.NODE_ENV === 'development') {
+            whitelist.push('*'); // Permite todos los orígenes en desarrollo
         }
-        if(whitelist.includes(origin)) {
-            callback(null, true)
+
+        if (!origin || whitelist.includes(origin)) {
+            callback(null, true);
         } else {
-            callback(new Error('Error de CORS'))
+            callback(new Error('Error de CORS'));
         }
     }
 }
