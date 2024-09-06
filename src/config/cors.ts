@@ -14,21 +14,13 @@
 //         }
 //     }
 // }
-
-import { CorsOptions } from "cors";
-
-export const corsConfig: CorsOptions = {
-    origin: (origin, callback) => {
-        const whitelist = [process.env.FRONTEND_URL];
-
-        if (process.env.NODE_ENV === 'development') {
-            whitelist.push('*'); // Permite todos los orígenes en desarrollo
-        }
-
-        if (!origin || whitelist.includes(origin)) {
-            callback(null, true);
+import { CorsOptions } from "cors"
+export const corsOptions: CorsOptions = {
+    origin: function (origin, callback) {
+        if (origin === process.env.FRONTEND_URL) {
+            callback(null, true)
         } else {
-            callback(new Error('Error de CORS'));
+            callback(new Error('Error de CORS'))
         }
     }
 }
